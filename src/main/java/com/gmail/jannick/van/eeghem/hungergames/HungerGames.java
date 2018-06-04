@@ -1,8 +1,7 @@
 package com.gmail.jannick.van.eeghem.hungergames;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -15,8 +14,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class HungerGames extends JavaPlugin {
 	private final FileConfiguration config = getConfig();
-	private List<GameQueue> queues = new ArrayList<>();
+	private Set<GameQueue> queues;
 	private final Logger log = getLogger();
+
 	@Override
 	public void onDisable() {
 		// TODO Auto-generated method stub
@@ -27,13 +27,17 @@ public class HungerGames extends JavaPlugin {
 	public void onEnable() {
 		// TODO Auto-generated method stub
 		Map<String, Object> vals = config.getValues(true);
-		if(vals.containsKey("queues")) {
-			Object tqueues = vals.get("queues");
-			if (tqueues instanceof Map<?, ?>) {
-				@SuppressWarnings("unchecked")
-				Map<String, Object> queues = (Map<String, Object>) tqueues;
+		if (vals.containsKey("queues")) {
+			@SuppressWarnings("unchecked")
+			Map<String, Object> tqueues = (Map<String, Object>) vals.get("queues");
+			for (Object val : tqueues.values()) {
+				if (val instanceof Map<?, ?>) {
+					Map<?, ?> queue = (Map<?, ?>) val;
+					queues.add(new GameQueue((int) queue.get("x"), (int) queue.get("y"), (int) queue.get("z"),
+							(String) queue.get("world")));
+				}
 			}
-		}else {
+		} else {
 			log.log(Level.CONFIG, "There are no queuers");
 		}
 		super.onEnable();
@@ -42,6 +46,6 @@ public class HungerGames extends JavaPlugin {
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onClick(PlayerInteractEvent e) {
 		Block b = e.getClickedBlock();
-		
+
 	}
 }
