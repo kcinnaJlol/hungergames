@@ -9,8 +9,8 @@ import org.bukkit.Location;
 import org.bukkit.block.Block;
 
 public class GameQueue implements Iterable<QueuedPlayer> {
-	private List<QueuedPlayer> list = new ArrayList<>();
-	private Block targetBlock;
+	List<QueuedPlayer> list = new ArrayList<>();
+	Block targetBlock;
 	@Override
 	public Iterator<QueuedPlayer> iterator() {
 		// TODO Auto-generated method stub
