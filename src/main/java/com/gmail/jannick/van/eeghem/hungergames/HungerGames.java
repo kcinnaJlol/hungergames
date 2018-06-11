@@ -5,8 +5,6 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -14,6 +12,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.plugin.java.JavaPlugin;
+import net.ess3.*;
 
 public class HungerGames extends JavaPlugin {
 	private final FileConfiguration config = getConfig();
@@ -58,7 +57,7 @@ public class HungerGames extends JavaPlugin {
 		Player p = e.getPlayer();
 		for (GameQueue q : queues) {
 			if (q.targetBlock.equals(b)) {
-				if (!(q.list.contains(new QueuedPlayer(e.getPlayer())))) {
+				if (!(q.list.contains(new QueuedPlayer(p)))) {
 					q.list.add(new QueuedPlayer(p));
 					p.sendMessage("You joined the queue");
 				} else {
